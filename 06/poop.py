@@ -3,18 +3,16 @@ from copy import deepcopy
 import argparse
 from collections import *
 import re
+from util import Grid
 
 
 def main(test=False):
-    orig_grid = []
-    with open("test.txt" if test else "input.txt") as f:
-        for line in f:
-            orig_grid.append(list(line.strip()))
+    orig_grid = Grid.from_file("test.txt" if test else "input.txt")
     
     cycle_count = 0
-    for ob_row in range(len(orig_grid)):
-        for ob_col in range(len(orig_grid[0])):
-            grid = deepcopy(orig_grid)
+    for ob_row in range(orig_grid.height):
+        for ob_col in range(orig_grid.width):
+            grid = orig_grid.copy()
             if grid[ob_row][ob_col] != '.':
                 continue
             grid[ob_row][ob_col] = "#"

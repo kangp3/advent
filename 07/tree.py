@@ -14,6 +14,19 @@ def main(test=False):
             eqs[int(stuff[0])] = [int(v) for v in stuff[1].strip().split(' ')]
 
     def solve_eq(target, vals):
+        res = sum(vals)
+        if res == target:
+            return True
+        ops = ['+'] * (len(vals)-1)
+        while True:
+            op_idx = len(ops)-1
+            while ops[op_idx] == '*':
+                op_idx -= 1
+            if op_idx == -1:
+                break
+
+            if ops[-1] == "+":
+                
         for ops in product('+*|', repeat=len(vals)-1):
             res = vals[0]
             for op, val in zip(ops, vals[1:]):

@@ -12,14 +12,26 @@ def main(test=False, is_logging_enabled=False):
     os.system('clear')
 
     grid = []
+    logging = []
     with open("test.txt" if test else "input.txt") as f:
         for line in f:
-            grid.append(list(line.strip()))
-    logging = deepcopy(grid)
+            row = []
+            logging_row = []
+
+            for c in line.strip():
+                row.append(c)
+                match c:
+                    case '.' | '^':
+                        logging_row.append(' ')
+                    case '#':
+                        logging_row.append('#')
+
+            grid.append(row)
+            logging.append(logging_row)
 
     def is_in_bounds(pos):
         return 0 <= pos[0] < len(grid) and 0 <= pos[1] < len(grid[0])
-    
+
     off_idx = 0
     guard_pos = None
     for r_idx, row in enumerate(grid):
@@ -52,7 +64,7 @@ def main(test=False, is_logging_enabled=False):
             r_pos, c_pos = pos
             r_off, c_off = OFFSETS[dir]
 
-            if logging[r_pos][c_pos] == '.':
+            if logging[r_pos][c_pos] == ' ':
                 logging[r_pos][c_pos] = OFF_LOGS[dir]
             if depth != curr_depth and is_logging_enabled:
                 print("\033[0;0H")
@@ -101,9 +113,7 @@ def main(test=False, is_logging_enabled=False):
             if (off_idx+1) % 4 in seen_offsets:
                 obs_coords = (g_row + OFFSETS[off_idx][0], g_col + OFFSETS[off_idx][1])
                 if obs_coords not in visited:
-                    print("CYCLE:", obs_coords)
-                    if obs_coords == (100, 64):
-                        break
+                    #print("CYCLE:", obs_coords)
                     found_cycle = True
                     cycle_count += 1
 
@@ -124,9 +134,7 @@ def main(test=False, is_logging_enabled=False):
         last_pos = guard_pos
         logging[g_row][g_col] = CYCLE_LOG if found_cycle else memory
 
-    for row in logging:
-        print(''.join(row))
-    print(cycle_count)
+    #print(cycle_count)
     #print(square_count)
 
 
