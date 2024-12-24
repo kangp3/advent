@@ -2,7 +2,6 @@
 from collections import *
 from copy import deepcopy
 from functools import cmp_to_key
-from functools import cache
 from itertools import *
 from util import *
 import argparse
